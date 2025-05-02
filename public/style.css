@@ -1,0 +1,106 @@
+.button-glow {
+    box-shadow: 0 0 12px 2px #42a5f5;
+    transition: box-shadow 0.3s ease;
+}
+  
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(66, 165, 245, 0.6); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(66, 165, 245, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(66, 165, 245, 0); }
+}
+  
+.button-pulse {
+    animation: pulse 1.5s infinite;
+}
+  
+/* DICE STUFF */
+.dice-container {
+    min-height: 100px; 
+  }
+  
+
+@keyframes diceFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-30deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+/* Player stuff */
+
+@keyframes playerRipple {
+    0% {
+      box-shadow: 0 0 0 0;
+    }
+    70% {
+      box-shadow: 0 0 0 10px transparent;
+    }
+    100% {
+      box-shadow: 0 0 0 0 transparent;
+    }
+  }
+  
+.player-ripple {
+    animation: playerRipple 1.5s ease-out infinite;
+  }
+  
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+ 
+
+@keyframes redGlowPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.8); }
+  50%  { box-shadow: 0 0 30px 10px rgba(255, 0, 0, 0.4); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+}
+
+.glow-red-pulse {
+  animation: redGlowPulse 2s ease-out;
+}
+
+
+body {
+  margin: 0;
+  background-color: #121212;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
+}
+
+.animated-dice-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.dice-float {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  opacity: 0.07;
+  animation-name: floatUp;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  }
+
+  @keyframes floatUp {
+    0%   { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-120vh) rotate(360deg); }
+  }
+  
