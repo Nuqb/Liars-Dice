@@ -47,7 +47,7 @@ node index.js
 
 2. Open your web browser and navigate to:
 ```
-http://localhost:3000
+http://localhost:2004
 ```
 
 ## 🎮 How to Play

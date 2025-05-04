@@ -1,3 +1,6 @@
+// =============================================
+// Vuetify Configuration
+// =============================================
 const vuetify = Vuetify.createVuetify({
   theme: {
     defaultTheme: 'dark',
@@ -7,63 +10,83 @@ const vuetify = Vuetify.createVuetify({
     }
   }
 });
+
+// =============================================
+// API Configuration
+// =============================================
 const API_URL = window.location.hostname === 'localhost' 
     ? 'ws://localhost:2004'
     : 'https://liars-dice-twuh.onrender.com/';
 
+// =============================================
+// Vue App Configuration
+// =============================================
 Vue.createApp({
     data() {
       return {
+        // Connection State
         socket: null,
-        playerName: '',
         joined: false,
-        players: [],
-        gameMessage: '',
-        isHost: false,
-        dice: [],
-        messageHandlers: {},
-        myColor: null,
-        availableColors: ['cyan', 'green', 'pink', 'purple', 'teal'],
-        gameStarted: false,
-        showColorOptions: false,
-        currentTurn: null,
-        bidQuanity: null,
-        bidFace: null,
-        lastBid: null,
-        bluffResult: null,
-        round: 1,
-        gameOver: false,
-        winnerName: '',
-        isReady: false,
-        startAttempted: false,
-        showConfirmStart: false,
-        diceRollKey: 0,
-        showBidDialog: false,
-        selectedMode: null,
+        errorMessage: '',
         lobbyIdInput: '',
         generatedLobbyId: '',
-        diceHidden: false,
-        errorMessage: '',
-        showHowTo: false,
-        showSettings: false,
-        darkMode: true,
-        soundsEnabled: true,
-        hasNewBet: false,
-        showLeaveConfirm: false,
-        bidError: '',
-        winnerName: null,
+        selectedMode: null,
+
+        // Player State
+        playerName: '',
+        myColor: null,
+        isHost: false,
+        isReady: false,
+        players: [],
+        availableColors: ['cyan', 'green', 'pink', 'purple', 'teal'],
+
+        // Game State
+        gameStarted: false,
+        gameOver: false,
+        gameMessage: '',
+        currentTurn: null,
+        lastBid: null,
+        round: 1,
+        winnerName: '',
         didPlayerWin: null,
 
+        // UI State
+        showColorOptions: false,
+        showConfirmStart: false,
+        showBidDialog: false,
+        showHowTo: false,
+        showSettings: false,
+        showLeaveConfirm: false,
+        startAttempted: false,
+        hasNewBet: false,
+        diceHidden: false,
+        bidError: '',
 
+        // Game Settings
+        darkMode: true,
+        soundsEnabled: true,
+
+        // Dice State
+        dice: [],
+        diceRollKey: 0,
+        bidQuanity: null,
+        bidFace: null,
+        bluffResult: null,
+
+        // Background Animation
         diceBackground: Array.from({ length: 12 }, (_, i) => ({
           id: i,
           face: (i % 6) + 1,
           left: Math.random() * 100,
           top: Math.random() * 100,
           duration: 10 + Math.random() * 10
-        }))        
+        }))
       };
     },
+
+    // =============================================
+    // Game Initialization Methods
+    // =============================================
     methods: {
       joinGame() {
         const lobbyId = this.selectedMode === 'create' ? this.generatedLobbyId : this.lobbyIdInput;
@@ -138,7 +161,7 @@ Vue.createApp({
     
       handleYourDice(msg) {
         const player = this.players.find(p => p.id === this.playerName);
-        if (player?.eliminated) return; // ❌ don’t show dice for eliminated players
+        if (player?.eliminated) return; // ❌ don't show dice for eliminated players
       
         if (this.bluffResult) {
           this.pendingDice = msg.dice;

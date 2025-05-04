@@ -1,11 +1,11 @@
+// =============================================
+// Dependencies and Server Setup
+// =============================================
 const WebSocket = require('ws');
 const express = require('express');
 
 const app = express();
 app.use(express.static('public'));
-
-// Add any express middleware or API routes here
-// e.g., app.get('/api/test', (req, res) => res.json({ msg: "hello" }));
 
 const server = app.listen(2004, function () {
   console.log("Server started on port 2004");
@@ -13,6 +13,9 @@ const server = app.listen(2004, function () {
 
 const wss = new WebSocket.WebSocketServer({ server: server });
 
+// =============================================
+// Game State and Constants
+// =============================================
 let playerCount = 0;
 let turnIndex = 0;
 let turnOrder = []; // stores array of player IDs
@@ -25,17 +28,22 @@ const players = new Map(); // key: ws, value: { id }
 const lobbies = new Map(); // key = lobbyId, value = { players, gameState, etc }
 const availableColors = ['cyan', 'green', 'pink', 'purple', 'blue', 'teal'];
 
-
+// =============================================
+// Message Handlers Registration
+// =============================================
 const messageHandlers = { 
   join: handleJoin,
   startGame: handleStartGame,
   chooseColor: handleChooseColor,
   bid: handleBid,
-  callBluff : handleCallBluff,
+  callBluff: handleCallBluff,
   toggleReady: handleToggleReady,
   playAgain: handlePlayAgain
 };
 
+// =============================================
+// WebSocket Connection Handler
+// =============================================
 wss.on('connection', (ws) => {
   ws.on('message', (data) => {
     let msg;
@@ -121,7 +129,6 @@ wss.on('connection', (ws) => {
       checkWinner(lobbyId);
     }
     
-  
     // Reassign host if they leave
     if (wasHost) {
       const remaining = Array.from(lobby.players.keys()).filter(client => client !== ws);
@@ -140,9 +147,11 @@ wss.on('connection', (ws) => {
     }
     broadcastPlayerList(lobbyId);
   });
-  
 });
 
+// =============================================
+// Game Action Handlers
+// =============================================
 function handleJoin(ws, msg) {
   const { name, lobbyId } = msg;
   if (!name || !lobbyId) {
@@ -197,17 +206,6 @@ function handleJoin(ws, msg) {
   broadcastPlayerList(lobbyId);
 }
 
-
-function broadcastToLobby(lobbyId, obj) {
-  const lobby = lobbies.get(lobbyId);
-  const msg = JSON.stringify(obj);
-  lobby.players.forEach((_, client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(msg);
-    }
-  });
-}
-
 function handleStartGame(ws, msg) {
   const lobbyId = ws.lobbyId;
   const lobby = lobbies.get(lobbyId);
@@ -255,7 +253,6 @@ function handleStartGame(ws, msg) {
   broadcastTurn(lobbyId);
 }
 
-
 function handleChooseColor(ws, msg) {
   const lobbyId = ws.lobbyId;
   const lobby = lobbies.get(lobbyId);
@@ -279,7 +276,6 @@ function handleChooseColor(ws, msg) {
     broadcastPlayerList(lobbyId);
   }
 }
-
 
 function handleBid(ws, msg) {
   const lobbyId = ws.lobbyId;
@@ -326,7 +322,6 @@ function handleBid(ws, msg) {
 
   broadcastTurn(lobbyId);
 }
-
 
 function handleCallBluff(ws, msg) {
   const lobbyId = ws.lobbyId;
@@ -416,7 +411,6 @@ function handleCallBluff(ws, msg) {
   }, 3000);  
 }
 
-
 function handleToggleReady(ws) {
   const lobbyId = ws.lobbyId;
   const lobby = lobbies.get(lobbyId);
@@ -452,8 +446,18 @@ function handlePlayAgain(ws) {
   broadcastPlayerList(lobbyId);
 }
 
-
-
+// =============================================
+// Broadcasting Functions
+// =============================================
+function broadcastToLobby(lobbyId, obj) {
+  const lobby = lobbies.get(lobbyId);
+  const msg = JSON.stringify(obj);
+  lobby.players.forEach((_, client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(msg);
+    }
+  });
+}
 
 function broadcast(obj) {
   const msg = JSON.stringify(obj);
@@ -504,7 +508,9 @@ function broadcastTurn(lobbyId) {
   checkWinner(lobbyId);
 }
 
-
+// =============================================
+// Game Logic Helper Functions
+// =============================================
 function calculateTotalDice(lobbyId) {
   const lobby = lobbies.get(lobbyId);
   if (!lobby) return 0;
@@ -517,7 +523,6 @@ function calculateTotalDice(lobbyId) {
   }
   return total;
 }
-
 
 function checkWinner(lobbyId) {
   const lobby = lobbies.get(lobbyId);
