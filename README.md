@@ -10,7 +10,7 @@ A real-time multiplayer implementation of the classic Liars' Dice game using Nod
 ## 🎮 Play Online
 You can play the game online at: [https://liars-dice-twuh.onrender.com](https://liars-dice-twuh.onrender.com)
 
-> Note: The deployed site may take around 30 seconds to start up when first accessed. This is normal behavior for the hosting platform.
+> Note: The deployed site may take around 30 seconds to start up when first accessed. This is normal behavior for the hosting platform as I have a free plan :)
 
 ## 🎲 About the Game
 
