@@ -7,6 +7,11 @@ A real-time multiplayer implementation of the classic Liars' Dice game using Nod
 ![Express](https://img.shields.io/badge/Express-v5.1.0-blue)
 ![WebSocket](https://img.shields.io/badge/WebSocket-v8.18.1-orange)
 
+## 🎮 Play Online
+You can play the game online at: [https://liars-dice-twuh.onrender.com](https://liars-dice-twuh.onrender.com)
+
+> Note: The deployed site may take around 30 seconds to start up when first accessed. This is normal behavior for the hosting platform.
+
 ## 🎲 About the Game
 
 Liars' Dice is a classic dice game where players try to deceive each other about the dice they have. Players roll dice in secret and make bids about the number of dice of a certain value exist among all players' dice. The game combines elements of probability, deception, and strategy.
@@ -34,6 +39,7 @@ npm install express@5.1.0 ws@8.18.1
 
 ## 🚀 Running the Application
 
+### Local Development
 1. Start the server:
 ```bash
 node index.js
